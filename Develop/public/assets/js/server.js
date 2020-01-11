@@ -4,6 +4,7 @@ const fs = require("fs");
 const util = require("util");
 const notesapi = require("../../../db/db.json");
 
+
 const app = express();
 const readFileAsync = util.promisify(fs.readFile);
 
@@ -25,13 +26,22 @@ app.get("/api/notes", function(req, res){//async function(req,res){             
 })
 
 app.post("/api/notes", function(req, res){
+    req.body.id = notesapi.length + 1;
     notesapi.push(req.body);
+    // console.log(req);
+    
     res.json(true);
 })
 
-app.delete("/api/notes", function(req, res){
-    
-})
+// app.delete("/api/notes/:id", function(req, res){
+//     let reqid;
+//     for(i = 0; i < notesapi.length; i++){
+//         if(notesapi[i] === req.body.id){
+//             reqid = i;
+//         }
+//     }
+
+// })
 
 app.listen(PORT,function(req,res){                      //Logs that server is running
     console.log("listening on port " + PORT);    
