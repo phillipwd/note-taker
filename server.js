@@ -37,39 +37,48 @@ app.post("/api/notes", function(req, res){
         }
         else{
             var fileContents = JSON.parse(data)
-                fileContents.push(newNote);
-                console.log(fileContents);
-                var backToFile = JSON.stringify(fileContents)
-                fs.writeFile("./db/db.json", backToFile, "UTF-8", function(err, data){
-                    if(err){
-                        throw err;
-                    }
-                    else{
-                        console.log("File updated");
-                    }
+            fileContents.push(newNote);
+            var backToFile = JSON.stringify(fileContents)
+            fs.writeFile("./db/db.json", backToFile, "UTF-8", function(err, data){
+                if(err){
+                    throw err;
+                }
+                else{
+                    console.log("File updated");
+                }
             })  
         }     
     res.json(true);
     });
 });
 
-app.post("/api/notes", function(req, res){
-    req.body.id = notesapi.length + 1;
-    notesapi.push(req.body);
-    // console.log(req);
-    
-    res.json(true);
+app.delete("/api/notes/:id", function(req, res){
+    const id = parseInt(req.params.id)
+    fs.readFile("./db/db.json", "UTF-8", function(err, data){
+        if(err){
+            throw err;
+        }
+        else{
+            var fileContents = JSON.parse(data)   
+            for(i = 0; i < fileContents.length; i++){
+                if(fileContents[i].id === id){
+                    fileContents.splice(i, 1);
+                    console.log(fileContents);
+                    backToFile = JSON.stringify(fileContents);
+                    fs.writeFile("./db/db.json", backToFile, "UTF-8", function(err, data){
+                        if(err){
+                            throw err;
+                        }
+                        else{
+                            console.log("File updated");   
+                        }
+                    })  
+                }
+            }
+        }
+    })
+    res.send("Note deleted.")
 })
-//===============================================
-// app.delete("/api/notes/:id", function(req, res){
-//     let reqid;
-//     for(i = 0; i < notesapi.length; i++){
-//         if(notesapi[i] === req.body.id){
-//             reqid = i;
-//         }
-//     }
-
-// })
 
 app.listen(PORT,function(req,res){                      //Logs that server is running
     console.log("listening on port " + PORT);    
