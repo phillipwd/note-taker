@@ -59,7 +59,9 @@ app.delete("/api/notes/:id", function(req, res){
             throw err;
         }
         else{
-            var fileContents = JSON.parse(data)   
+            var fileContents = JSON.parse(data)  
+            console.log(fileContents);
+             
             for(i = 0; i < fileContents.length; i++){
                 if(fileContents[i].id === id){
                     fileContents.splice(i, 1);
