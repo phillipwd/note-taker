@@ -70,7 +70,7 @@ app.delete("/api/notes/:id", function(req, res){
                             throw err;
                         }
                         else{
-                            console.log("File updated");   
+                            console.log("File updated", data);   
                         }
                     })  
                 }
